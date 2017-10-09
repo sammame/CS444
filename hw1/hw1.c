@@ -10,6 +10,7 @@
 #include <unistd.h> //sleep
 #include <string.h> //memset
 #include <pthread.h>
+#include "mt19937ar.h" //Mersenne Twister header file
 
 #define false 0
 #define true 1
@@ -17,11 +18,13 @@
 #define LOOP_COUNT 500      //Set how long the program runs
 #define THREAD_COUNT 2	    //Number of producer and consumer threads
 #define ENABLE_SLEEP false  //turn sleep on or off for testing
+#define asm __asm__ __volatile__ //used to call functions in asm (rdrand)
 
 struct item {
 	int value;
 	int wait;
 };
+
 
 //Global variables
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -32,6 +35,48 @@ int buffer_size = 0;
 int buffer_in_use = false;
 int buffer_is_full = false;
 int buffer_is_empty = true;
+
+
+int randnum(int b, int a)
+{
+	//set up registers 
+        unsigned int eax,ebx,ecx,edx;
+
+        int retval = 0;
+        char vendor[13];
+
+
+        eax = 0x01;
+	
+	// check cpuid
+        __asm__ __volatile__(
+                                "cpuid;"
+                                : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx)
+                                : "a"(eax)
+                             );
+        if(ecx & 0x40000000)	//if true use rdrand
+        {
+                unsigned int tmp = 0;
+
+                __asm__ __volatile__(
+                                     "rdrand %0;"
+                                     : "=r" (tmp)
+                                     );
+                retval = tmp % (a - b + 1) + b;
+
+        }
+        else	//else use MT
+        {
+
+                //unsigned long s = time(NULL);
+                //init_genrand(s);
+
+                retval = (genrand_int32() % (a - b + 1)) + b;
+        }
+
+	return retval;
+
+}
 
 void* producer(void* arg)
 {
@@ -54,8 +99,8 @@ void* producer(void* arg)
 
 		//place random value and waiting period in buffer
 		buffer_in_use = true;
-		buffer[buffer_size].value = rand() % 1000;
-		buffer[buffer_size].wait = rand() % 8 + 2;
+		buffer[buffer_size].value = randnum(0,1000);
+		buffer[buffer_size].wait = randnum(2,8);
 
 		//change buffer values
 		buffer_size++;
@@ -76,7 +121,7 @@ void* producer(void* arg)
 		pthread_mutex_unlock(&mutex);
 
 		//wait for 3 to 7 seconds
-		int wait_time = rand() % 5 + 3;
+		int wait_time = randnum(3,5);
 		printf("PRODUCER #%d: Waiting for %d seconds\n",
 			    thread_num, wait_time);
 		if(ENABLE_SLEEP)
