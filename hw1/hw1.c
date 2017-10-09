@@ -5,7 +5,6 @@
  */
 
 #include <stdio.h>  //printf, scanf, NULL, ...
-#include <stdlib.h> //srand, rand
 #include <time.h>   //time
 #include <unistd.h> //sleep
 #include <string.h> //memset
@@ -17,7 +16,7 @@
 #define BUFFER_CAPACITY 32
 #define LOOP_COUNT 500      //Set how long the program runs
 #define THREAD_COUNT 2	    //Number of producer and consumer threads
-#define ENABLE_SLEEP false  //turn sleep on or off for testing
+#define ENABLE_SLEEP true  //turn sleep on or off for testing
 #define asm __asm__ __volatile__ //used to call functions in asm (rdrand)
 
 struct item {
@@ -43,8 +42,6 @@ int randnum(int b, int a)
         unsigned int eax,ebx,ecx,edx;
 
         int retval = 0;
-        char vendor[13];
-
 
         eax = 0x01;
 	
@@ -80,9 +77,6 @@ int randnum(int b, int a)
 
 void* producer(void* arg)
 {
-	/*TODO: implement randomness with rdrand x86 ASM and
-			Mersenne Twister*/
-
 	//Extract and dereference parameter value
 	int *thread_num_ptr = (int*) arg;
 	int thread_num = *thread_num_ptr;
@@ -187,8 +181,6 @@ void* consumer(void* arg)
 
 int main(int argc, char **argv)
 {
-	srand(time(NULL));
-
 	//clear buffer
 	memset(buffer, '\0', sizeof(buffer));
 
