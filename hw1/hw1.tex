@@ -1,0 +1,88 @@
+\batchmode
+\documentclass[10pt]{article}
+\author{\LARGE Drake Seifert, Scott Merrill}
+\title{\Huge CS444 Project 1}
+\begin{document}
+\maketitle
+\begin{abstract}
+	\large This Operating Systems assignment document covers the essentials to running a virtual machine on Oregon State University's os2 server, the meaning of various flags that are ran with qemu, as well as a breakdown of concurrency between threads in the producer-consumer problem.
+\end{abstract}
+\clearpage
+\textbf{Setting up the Kernel:}
+\begin{enumerate}
+	\item \textit{Enter directory /scratch/fall2017/42}
+	\item git repo git://git.yoctoproject.org/linux-yocto-3.19
+	\item git checkout 'v3.19.2'
+	\item cp /scratch/fall2017/files/config-3.19.2-yocto-qemu .config
+	\item source /scratch/files/environment-setup-i586-poky-linux.csh
+	\item make menuconfig
+	\item \textit{Select General setup}
+	\item \textit{Select Local version}
+	\item \textit{Rename to "-42-hw1" without quotes and hit Enter}
+	\item \textit{Exit menuconfig}
+	\item make -j4 all
+	\item qemu-system-i386 -gdb tcp::5542 -S -nographic -kernel  kernel arch/x86/boot/bzImage -drive file=core-image-lsb-sdk-qemux86.ext4,if=virtio -enable-kvm -net none -usb -localtime --no-reboot --append "root=/dev/vda rw console=ttyS0 debug"
+	\item \textit{Open new session}
+	\item source /scratch/files/environment-setup-i586-poky-linux.csh
+	\item \$GDB
+	\item target remote :5542
+	\item continue
+	\item \textit{Login as root}
+\end{enumerate}
+\textbf{\\Qemu Command-Line Flags:}\\
+\textit{qemu-system-i386 -gdb tcp::5542 -S -nographic -kernel bzImage-qemux86.bin -drive file=core-image-lsb-sdk-qemux86.ext4,if=virtio -enable-kvm -net none -usb -localtime --no-reboot --append "root=/dev/vda rw console=ttyS0 debug"
+}\\\\
+\textbf{-gdb} This will wait for a gdb connection on the device, in this case on port 5542. These are often TCP connections.\\
+\textbf{-S} Do not start CPU at startup.\\
+\textbf{-nographic} This disables the graphical output so that qemu is strictly command line.\\
+\textbf{-kernel} Uses bzImage as the kernel image (this can be a linux kernel or in multiboot)\\
+\textbf{-drive file=core-image-lsb-sdk-qemux86.ext4} This opens the image using file descriptors from a fd set.\\
+\textbf{-enable-kvm} This allows for full KVM virtualization support (must be enabled when compiling).\\
+\textbf{-net none} This indicates that no network devices should be configured (overrides the default)\\
+\textbf{-usb} Enables the USB driver.\\
+\textbf{-localtime} Start at current UTC or local time.\\
+\textbf{--no-reboot} Exit instead of rebooting\\
+\textbf{--append}  Sets the kernel command line\\\\\\
+\textbf{Concurrency assignment:}\\\\
+\textbf{What do you think the main point of this assignment is?}\\
+
+I believe the primary point of this assignment was to get us to review the material from OS 1 and to get familiar with threads again for future assignments. It also got us thinking in an “operating systems mindset” in that we are dealing with concurrent access of information that must be carefully and precisely managed.\\\\
+\textbf{How did you personally approach the problem? Design decisions, algorithm, etc.}\\
+
+After reviewing some material from OS 1 we sat down to think about the project specifications and wrote out some pseudo code to get our logic straight. After getting a basic design laid out we began to implement it with code, testing carefully along the way. We began by first implementing a single thread (the producer thread) and verifying that it worked correctly. We then added the additional consumer thread and the mutex logic. Finally, we allowed the programmer to change a few \#define variables to choose the number of producer and consumer threads.\\\\
+\textbf{How did you ensure your solution was correct? Testing details, for instance.}\\
+
+We tested incrementally, making sure any added code gave us results we would expect to see. We started with creating a simple producer thread that filled the buffer with values. We then added the mutex logic. Next we made a consumer thread that could access the buffer. Finally, we implemented the necessary random number generator from the instructions given, and gave a loop count for the threads to continue for as long as the programmer desires. After implementing the ability to have multiple producer and consumer threads we passed in the thread number to their corresponding function to test that all threads were being used properly.\\\\
+\textbf{What did you learn?}\\
+
+Seeing as it’s been one year since we took OS 1, we practically had to relearn how threads work and how to utilize them. Due to some helpful resources online we managed to learn quite a bit, specifically about mutexes, utilizing pthreads, pthread “conditions” and how to use them, avoiding race conditions, and overall general concurrency among multiple threads.\\\\\\
+\textbf{Version Control Log:}\\
+\begin{center}
+	\begin{tabular}{| l | l | l | p{5cm} |}
+	\hline
+	Version & Date & Author & commit message \\ \hline
+	1 & 10/09/17 & Drake Seifert & Adding producer-consumer problem w/o correct randomness \\ \hline
+	2 & 10/09/17 & Scott Merrill & fixed number generator \\ \hline
+	3 & 10/09/17 & Drake Seifert & Cleaned up compiler warnings \\ \hline
+	\end{tabular}
+\end{center}
+\textbf{\\\\Work Log:}\\\\
+\textbf{Drake: }Created the group folder, cloned the yocto-environment github repository, began the first steps for the virtual machine, implemented the concurrency program (except the required random functionality), answered the concurrency assignment questions, and created the LaTeX document.\\
+\textbf{Scott: }Ran the professor's virtual machine, implemented our own version of the virtual machine, added the required random functionality to the concurrency project, created our Github repository, and wrote the required steps to get the virtual machine up and running.
+\newpage
+\textbf{Sources: }
+\begin{enumerate}
+	\item pthreads \#1: Introduction\\
+	https://www.youtube.com/watch?v=ynCc-v0K-do
+	\item pthreads \#2: Creating multiple threads\\
+	https://www.youtube.com/watch?v=1ks-oMotUjc
+	\item Solution to Producer Consumer Problem\\
+	http://cis.poly.edu/cs3224a/Code/ProducerConsumerUsingPthreads.c
+	\item Mutex Synchronization in Linux with Pthreads\\
+	https://www.youtube.com/watch?v=GXXE42bkqQk
+	\item LaTeX Tutorial 1 - Creating a LaTeX Document\\
+	https://www.youtube.com/watch?v=SoDv0qhyysQ
+	\item Intel® 64 and IA-32 Architectures Software Developer’s Manual\\
+	https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-manual-325462.pdf
+\end{enumerate}
+\end{document}
