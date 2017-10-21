@@ -32,4 +32,6 @@ setenv OECORE_DISTRO_VERSION "1.8"
 setenv OECORE_SDK_VERSION "1.8"
 setenv ARCH x86
 setenv CROSS_COMPILE i586-poky-linux-
+
 echo "Environment variables updated"
+
