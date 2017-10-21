@@ -1,2 +1,2 @@
 #/bin/bash
-qemu-system-i386 -gdb tcp::5542 -S -nographic -kernel arch/x86/boot/bzImage -drive file=core-image-lsb-sdk-qemux86.ext4,if=virtio -enable-kvm -net none -usb -localtime --no-reboot --append "root=/dev/vda rw console=ttyS0 debug".
+qmu-system-i386 -gdb tcp::5542 -S -nographic -kernel arch/x86/boot/bzImage -drive file=/scratch/fall2017/42/linux-yocto-3.19/core-image-lsb-sdk-qemux86.ext4,if=virtio -enable-kvm -net none -usb -localtime --no-reboot --append "root=/dev/vda rw console=ttyS0 debug".
