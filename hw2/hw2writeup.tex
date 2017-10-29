@@ -1,0 +1,57 @@
+\documentclass[letterpaper,10pt,notitlepage,fleqn]{article}
+\usepackage{nopageno} %gets rid of page numbers
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{textheight=9in, textwidth=6.5in} %sets 1" margins 
+
+\def\name{Group 42}
+\title{Assignment \#2}
+\author{Group 42}
+
+\begin{document}
+\maketitle
+\clearpage
+
+
+\section{Design Plan}
+Choose either Look or C-Look
+
+\section{Questions}
+\begin{enumerate}
+\item \textbf{What do you think the main point of this assignment is?}
+\\	The main point of this assignment is to develop a better understanding of how kernel scheduling works. By implementing our own version of a scheduler (noop) we show that we have a fundamental understanding of the basics for how a scheduler functions in the kernel. 
+
+\item \textbf{How did you personally approach the problem? Design decisions, algorithm, etc.}
+\\ The first step we took to figuring out how to implement a noop scheduler we to find where in the kernel the scheduler was currently being implemented. We found the sstf-iosched.c file in block directory. Next we needed to decide on what algorithm we wanted to use (Look or C-Look). Our group decided to use C-Look as our elevator algorithm we would implement to traverse memory sectors and processes I/O requests. C-Look is a one-way elevator algorithm, which means that once the algorithm traverses to the last request, it loops backs to the beginning and continues through. After we had the file we were going to use as a template for implementation and an elevator algorithm we would use to traverse the process requests; all we had to do was modify the code to fit our needs and provide some form of testing. 
+
+\item \textbf{How did you ensure your solution was correct? Testing details, for instance.}
+\\ Our testing details....
+
+\item \textbf{What did you learn?}
+\\ We learned ....
+
+\item \textbf{How should the TA evaluate your work? Provide detailed steps to prove correctness.} 	\begin{enumerate}
+	\item First you need to set up the environment variables by running the command source environment-setup-i586.pokey-linux.csh
+    \item Next you will want build the kernel: make -j4 all
+    \item You may be prompted to change the default scheduler: Select sstf-iosched
+    \item Once the kernel has been compiled you will run the run\_qemu command, which will start the program.
+    \item In a new session, source the file like in step (a) and run the command: \$GDB 
+    \item run: target remote :5542 and type continue.
+    \item Now your kernel should be working. The login is root. 
+    \item To test and see how the kernel handles processes run the python script: 
+    \item When you are done type to exit vm: reboot 
+	\end{enumerate}
+\end{enumerate}
+
+\section{Work and Control log}
+\begin{center}
+    \begin{tabular}{| p{3cm} | l | l | p{5cm} |}    
+    	\hline
+        Date & Author & Commit & Summary \\ \hline
+        
+	
+	\end{tabular}
+\end{center}
+
+
+\end{document}
