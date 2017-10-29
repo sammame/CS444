@@ -6,7 +6,7 @@ config IOSCHED_SSTF
 	bool
 	default y
 	---help---
-	Shortest seek time first
+	SSTF / CLook algorithm
 
 config IOSCHED_NOOP
 	bool
