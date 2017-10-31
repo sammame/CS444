@@ -15,7 +15,7 @@
 
 
 \section{Design Plan}
-Choose either Look or C-Look
+For our implementation of the sstf ioscheduler we decided to use LOOK. LOOK is an elevator algorithm that traverses up to the highest value (in this case sector position) and then reverses direction and goes back down. To implement this we had to change the dispatch function that noop uses for it's scheduler. The design we used is as processes come in they will be added onto the request queue and the algorithm will traverse the queue handling the requests. Once the scheduler reaches the last request, it reverses direction and the processes are popped off of the queue to be ran in decending order
 
 \section{Questions}
 \begin{enumerate}
@@ -47,9 +47,9 @@ Choose either Look or C-Look
 	\end{enumerate}
 \end{enumerate}
 
-\section{Work and Control log}
+\section{Version control log}
 \begin{center}
-    \begin{tabular}{| p{2.5cm} | l | l | p{3cm} |}    
+    \begin{tabular}{| p{2.5cm} | l | 1 | p{5cm} |}    
     	\hline
         Date & Author & Commit & Summary \\ \hline
         Oct 21 2017 & Drake & 6a8ad1e1417b764346372b28f789dd5a792e26f0 & Created hw2 directory \\ \hline
@@ -58,18 +58,23 @@ Choose either Look or C-Look
         Oct 21 2017 & Drake & a78bac5adfc46a4547f18a7af36284104cb4c90b & Fixed script, works correctly now \\ \hline
         Oct 26 2017 & Drake & ebc7520d418f2a1eec90bcbe9fd00d562babc322 & Created sstf-iosched.c \\ \hline
         Oct 26 2017 & Drake & d12297b6d648b213fdf3bd0e412e782e834c6ae6 & Added sstf-iosched.o to makefile \\ \hline
-         Oct 29 2017 & Drake & 275ae9f08ac39a1599f07789de8b2ffe4fc7818a & Updated kconfig.iosched \\ \hline
-         Oct 29 2017 & Drake & 275ae9f08ac39a1599f07789de8b2ffe4fc7818a & Updated kconfig.iosched \\ \hline
-         Oct 29 2017 & Scott & b74f6a8e4518d9648985487df34bfc4f58eb3591 & Added outline .tex file for Assignment 2 write up \\ \hline
-         Oct 29 2017 & Drake & dff9510476b86ac6170e6acd10bef74b74431a16 & Changed noop to sstf for function and struct names \\ \hline
-         Oct 29 2017 & Scott & ea8076403a1b3605aeda0aa526f02f60d461b9ff & Made rwscript.py as test script to generate I/O processes \\ \hline
-         Oct 29 2017 & Scott & 66a76fb7fcf0dfa11b5a50fa3e32856f726a7649 & improved rwscript.py to have more test cases \\ \hline
-         
-        
-        
-	
+        Oct 29 2017 & Drake & 275ae9f08ac39a1599f07789de8b2ffe4fc7818a & Updated kconfig.iosched \\ \hline
+        Oct 29 2017 & Drake & 275ae9f08ac39a1599f07789de8b2ffe4fc7818a & Updated kconfig.iosched \\ \hline
+        Oct 29 2017 & Scott & b74f6a8e4518d9648985487df34bfc4f58eb3591 & Added outline .tex file for Assignment 2 write up \\ \hline
+        Oct 29 2017 & Drake & dff9510476b86ac6170e6acd10bef74b74431a16 & Changed noop to sstf for function and struct names \\ \hline
+        Oct 29 2017 & Scott & ea8076403a1b3605aeda0aa526f02f60d461b9ff & Made rwscript.py as test script to generate I/O processes \\ \hline
+        Oct 29 2017 & Scott & 66a76fb7fcf0dfa11b5a50fa3e32856f726a7649 & improved rwscript.py to have more test cases \\ \hline
+	    Oct 30 2017 & Drake & 2890fda0133032ceef642438850db5fe964dd813 & Adjustments in sstf algorithm \\ \hline
+	    Oct 30 2017 & Scott & f20423e666f4668a53f46c39901e8d75a50590bc & Updated hw2writeup.tex and Makefile for submission \\ \hline
+    	Oct 30 2017 & Drake & 685b78ab722bf316875b38656275b7789fa893f1 & Added to sstf-iosched \\ \hline
+	    Oct 30 2017 & Drake & 9af2dc5cdf554677bebeabd2b00dca8f50593932 & Changed output statements \\ \hline	
+        Oct 30 2017 & Drake & af1e9d9f0125663a58c0b79dd178e2030e976517 & Switched the order of file reads \\ \hline
 	\end{tabular}
 \end{center}
+
+\section{Work log}
+We used paired programming for a large portion of this assignment to implement the LOOK algorithm in the sstf-iosched.c file. We shared resources with each other regarding the LOOK and C-LOOK algorithms as well as relevant linux-yocto documentation. We both went to office hours and cleared up a couple questions regarding testing and choosing the default scheduler. Scott wrote most of the tex file as well as the python script. Drake made the necessary changes to the Kconfig.iosched file and makefile in the block directory.
+
 
 
 \end{document}
