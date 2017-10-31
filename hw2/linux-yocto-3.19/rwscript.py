@@ -22,7 +22,7 @@ file.close
 
 #4
 file = open("testfile3.txt","w") 
-file.write("UGH hi for the third time. ")
+file.write("Hello World for the third time. ")
 file.write("I AM THE LAST TEST FILE.")
 file.close()
 
