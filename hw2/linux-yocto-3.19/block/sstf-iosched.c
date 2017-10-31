@@ -64,7 +64,7 @@ static int sstf_dispatch(struct request_queue *q, int force)
 static void sstf_add_request(struct request_queue *q, struct request *rq)
 {
 	struct sstf_data *nd = q->elevator->elevator_data;
-	printk("Adding request at sector position: %llu\n",
+	printk("Pushing request at sector position: %llu\n",
 			(unsigned long long)blk_rq_pos(rq));
 
 	list_add_tail(&rq->queuelist, &nd->queue);
