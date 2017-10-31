@@ -27,12 +27,12 @@ file.write("I AM THE LAST TEST FILE.")
 file.close()
 
 #4
-file = open("testfile3.txt","r") 
+file = open("testfile2.txt","r") 
 print file.read() 
 file.close
 
 #5
-file = open("testfile2.txt","r") 
+file = open("testfile3.txt","r") 
 print file.read() 
 file.close
 
