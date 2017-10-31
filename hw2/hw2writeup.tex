@@ -1,3 +1,4 @@
+\batchmode
 \documentclass[letterpaper,10pt,notitlepage,fleqn]{article}
 \usepackage{nopageno} %gets rid of page numbers
 \usepackage[utf8]{inputenc}
@@ -22,32 +23,49 @@ Choose either Look or C-Look
 \\	The main point of this assignment is to develop a better understanding of how kernel scheduling works. By implementing our own version of a scheduler (noop) we show that we have a fundamental understanding of the basics for how a scheduler functions in the kernel. 
 
 \item \textbf{How did you personally approach the problem? Design decisions, algorithm, etc.}
-\\ The first step we took to figuring out how to implement a noop scheduler we to find where in the kernel the scheduler was currently being implemented. We found the sstf-iosched.c file in block directory. Next we needed to decide on what algorithm we wanted to use (Look or C-Look). Our group decided to use C-Look as our elevator algorithm we would implement to traverse memory sectors and processes I/O requests. C-Look is a one-way elevator algorithm, which means that once the algorithm traverses to the last request, it loops backs to the beginning and continues through. After we had the file we were going to use as a template for implementation and an elevator algorithm we would use to traverse the process requests; all we had to do was modify the code to fit our needs and provide some form of testing. 
+\\ The first step we took to figuring out how to implement a noop scheduler we to find where in the kernel the scheduler was currently being implemented. We found the sstf-iosched.c file in block directory. Next we needed to decide on what algorithm we wanted to use (Look or C-Look). Our group decided to use Look as our elevator algorithm we would implement to traverse memory sectors and processes I/O requests. Look is a two-way elevator algorithm, which means that once the algorithm traverses to the last request, it reverses its direction heading back to the beginning and continues through. After we had the file we were going to use as a template for implementation and an elevator algorithm we would use to traverse the process requests; all we had to do was modify the noop scheduler to implement the LOOK algorithm and provide some form of testing. 
 
 \item \textbf{How did you ensure your solution was correct? Testing details, for instance.}
-\\ Our testing details....
+\\ To test that our scheduler works correctly, we added some printk() statements that shows the location of our scheduler as it traverses the request queue. These statements print to the screen either "adding request" or "popping request" and list the sector location of the process.
 
 \item \textbf{What did you learn?}
-\\ We learned ....
+\\ We learned how qemu designates which scheduler to use as well as how to implement a basic sstf scheduler using the LOOK algorithm. We learned how to change the default interface device from virtio to hda during boot time. 
 
 \item \textbf{How should the TA evaluate your work? Provide detailed steps to prove correctness.} 	\begin{enumerate}
+	\item Before setting up the kernel you need to make sure you have the run\_qemu sc ript provided (which changes the command line flags to run our scheduler) as well as our makefile, sstf\_scheduler.c file, and the Kconfig.iosched file located in the /block directory
 	\item First you need to set up the environment variables by running the command source environment-setup-i586.pokey-linux.csh
+    
+    \item Make sure you are using the correct version of the kernel: git checkout 'v3.19.2' 
     \item Next you will want build the kernel: make -j4 all
-    \item You may be prompted to change the default scheduler: Select sstf-iosched
     \item Once the kernel has been compiled you will run the run\_qemu command, which will start the program.
+    \item You may be prompted to change the default scheduler: Select sstf-iosched
     \item In a new session, source the file like in step (a) and run the command: \$GDB 
     \item run: target remote :5542 and type continue.
     \item Now your kernel should be working. The login is root. 
-    \item To test and see how the kernel handles processes run the python script: 
+    \item To test and see how the kernel handles processes run the python script: rwscript.py located in our kernel in the hw2 directory 
     \item When you are done type to exit vm: reboot 
 	\end{enumerate}
 \end{enumerate}
 
 \section{Work and Control log}
 \begin{center}
-    \begin{tabular}{| p{3cm} | l | l | p{5cm} |}    
+    \begin{tabular}{| p{2.5cm} | l | l | p{3cm} |}    
     	\hline
         Date & Author & Commit & Summary \\ \hline
+        Oct 21 2017 & Drake & 6a8ad1e1417b764346372b28f789dd5a792e26f0 & Created hw2 directory \\ \hline
+        Oct 21 2017 & Scott & 936f16dc92663cea2c07125c244fba11ad226e48 & Updated config file to -42-hw2 \\ \hline
+        Oct 21 2017 & Drake & 96561ad9210d39ea8b34c3d71265de582c9e4452 & added script to run vm \\ \hline
+        Oct 21 2017 & Drake & a78bac5adfc46a4547f18a7af36284104cb4c90b & Fixed script, works correctly now \\ \hline
+        Oct 26 2017 & Drake & ebc7520d418f2a1eec90bcbe9fd00d562babc322 & Created sstf-iosched.c \\ \hline
+        Oct 26 2017 & Drake & d12297b6d648b213fdf3bd0e412e782e834c6ae6 & Added sstf-iosched.o to makefile \\ \hline
+         Oct 29 2017 & Drake & 275ae9f08ac39a1599f07789de8b2ffe4fc7818a & Updated kconfig.iosched \\ \hline
+         Oct 29 2017 & Drake & 275ae9f08ac39a1599f07789de8b2ffe4fc7818a & Updated kconfig.iosched \\ \hline
+         Oct 29 2017 & Scott & b74f6a8e4518d9648985487df34bfc4f58eb3591 & Added outline .tex file for Assignment 2 write up \\ \hline
+         Oct 29 2017 & Drake & dff9510476b86ac6170e6acd10bef74b74431a16 & Changed noop to sstf for function and struct names \\ \hline
+         Oct 29 2017 & Scott & ea8076403a1b3605aeda0aa526f02f60d461b9ff & Made rwscript.py as test script to generate I/O processes \\ \hline
+         Oct 29 2017 & Scott & 66a76fb7fcf0dfa11b5a50fa3e32856f726a7649 & improved rwscript.py to have more test cases \\ \hline
+         
+        
         
 	
 	\end{tabular}
