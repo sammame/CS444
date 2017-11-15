@@ -58,6 +58,9 @@ static void sbd_transfer(struct sbd_device *dev, sector_t sector,
 	unsigned long offset = sector * logical_block_size;
 	unsigned long nbytes = nsect * logical_block_size;
 
+	//Print statement to test if working
+	printk("You are in the sbd_transfer func\n"); 
+
 	if ((offset + nbytes) > dev->size) {
 		printk (KERN_NOTICE "sbd: Beyond-end write (%ld %ld)\n", offset, nbytes);
 		return;
@@ -82,9 +85,9 @@ static void sbd_request(struct request_queue *q) {
 			continue;
 		}
 		sbd_transfer(&Device, blk_rq_pos(req), blk_rq_cur_sectors(req),
-				req->buffer, rq_data_dir(req));
+			bio_data(req->bio), rq_data_dir(req));
 		if ( ! __blk_end_request_cur(req, 0) ) {
-			req = blk_fetch_request(q);
+			req = blk_fetch_request(q),bio_data(req->bio);
 		}
 	}
 }

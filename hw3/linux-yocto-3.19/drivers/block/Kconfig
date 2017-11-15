@@ -17,6 +17,11 @@ if BLK_DEV
 
 config SBD
 	tristate "Simple Block Device"
+	default m
+	---help---
+	  If you say Y here, support for the sbd with will be compiled into the 
+	  kernel and accessible via a device node. You can also say M here and the 
+	  driver will be built as a module named sdb.ko.
 
 config BLK_DEV_NULL_BLK
 	tristate "Null test block driver"
