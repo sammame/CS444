@@ -102,9 +102,8 @@ To implement our driver we used the simple block driver design from http://blog.
     \item run ``lsmod" to confirm driver
     
     \item To test:
-    \subitem create file: touch testfile
-    \subitem write to file: echo "Hello World" \textgreater  testfile
-    \subitem read file: cat testfile 
+    \subitem write to file: echo "Hello World" \textgreater  /mnt/testfile
+    \subitem read file: grep -a "Hello World"  /dev/sbd0 
     
     \item To unmount module:
     \subitem umount /mnt
