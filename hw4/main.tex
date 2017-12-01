@@ -1,0 +1,118 @@
+\nonstopmode % halt on errors
+\documentclass[onecolumn, draftclsnofoot,10pt, compsoc]{IEEEtran}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{setspace}
+
+\usepackage{geometry}
+\geometry{textheight=9.5in, textwidth=7in}
+
+
+% 1. User headings
+\def \ClassName {CS 444}
+\def \AuthorName {Scott Merrill and Drake Seifert}
+\def \DocName {Homework Assignment \#4}
+
+
+% 2. Code markup
+
+\usepackage{xcolor}
+\usepackage{listings}
+
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mGray}{rgb}{0.5,0.5,0.5}
+\definecolor{mPurple}{rgb}{0.58,0,0.82}
+\definecolor{backgroundColour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{CStyle}{
+    backgroundcolor=\color{backgroundColour},   
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=C
+}
+
+\begin{document}
+\begin {titlepage}
+	\pagenumbering{gobble}
+    \begin{singlespace}
+    	\hfill
+        \par\vspace{.2in}
+    	\centering
+    	\scshape{
+    		\huge \DocName \par
+            \par\vspace{.2in}
+            \large \ClassName \par
+            
+            \par\vspace{7in}
+            \large By: \AuthorName\par
+            \par\vspace{.2in}
+            \small Abstract: Slobbery slob....
+    	}
+    \end{singlespace}
+\end{titlepage}
+
+
+\section{Design Plan}
+
+The SLOB automatically uses the first-fit algorithm, meaning requested memory is granted on the first address space available that has fits the capacity requirements. For this assignment we will implement the best-fit algorithm, an algorithm that trades the efficiency of time of initial memory allocation with less fragmentations. The best-fit algorithm achieves this by checking each available chunk of memory and allocating the smallest chunk that is large enough to meet the needs of the requested memory, reducing many inefficiencies that occur in the first-fit algorithm. Once the best-fit algorithm is implemented we will compare the total memory allocation between both SLOB implementations and note the efficieny increases of the best-fit algorithm versus the first-fit algorithm.
+
+\section{Questions}
+\begin{enumerate}
+\item \textbf{What do you think the main point of this assignment is?}
+\\	
+
+\item \textbf{How did you personally approach the problem? Design decisions, algorithm, etc.}
+\\
+\item \textbf{How did you ensure your solution was correct? Testing details, for instance.}
+\\   
+
+\item \textbf{What did you learn?}
+\\ 
+
+\item \textbf{How should the TA evaluate your work? Provide detailed steps to prove correctness.}
+\begin{enumerate}
+	\item Before setting up the kernel you need to make sure you have the run\_qemu script provided (which changes the command line flags to run our scheduler) as well as our makefile, sbd.c, and Kconfig files that are located in the driver/block/ folder. You also need the core-image-lsb-skd-qemux86.ext4 which is not included in the patch file because it is too big.
+    
+	\item First you need to set up the environment variables by running the command source environment-setup-i586.pokey-linux.csh
+    
+    \item Make sure you are using the correct version of the kernel: git checkout 'v3.19.2'
+    \item Next you will want build the kernel: make -j4 all
+    \item Change the default memory allocation algorithm to SLOB:
+    	\begin{itemize}
+		\item make menuconfig
+        \item Select "General Setup"
+        \item Select "Choose SLAB allocator"
+        \item Select "SLOB" and exit
+        \end{itemize}
+    \item Once the kernel has been compiled you will run the run\_qemu command, which will start the program.
+ 
+	\end{enumerate}
+\end{enumerate}
+
+\section{Work and Control log}
+\begin{center}
+    \begin{tabular}{| p{2.5cm} | l | l | p{3cm} |}    
+    	\hline
+        Date & Author & Commit & Summary \\ \hline
+        Nov 30 2017 & Drake & 64772c7e210feeadc3b3b7f17911ace57283cadd & Creating HW4 Folder \\ \hline    	
+	\end{tabular}
+\linebreak
+
+\textbf{Work Log:}  
+\end{center}
+ 
+
+\end{document}
